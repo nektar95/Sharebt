@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "627844066136",
+    "firebase_url": "https://debt-saver.firebaseio.com",
+    "project_id": "debt-saver",
+    "storage_bucket": "debt-saver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627844066136:android:d8fa25146e14cb82",
+        "android_client_info": {
+          "package_name": "com.application.nektar.debtsaver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "627844066136-rbo71609m4pnaps9ner19bj631mavuqe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.application.nektar.debtsaver",
+            "certificate_hash": "b1266ac6619384127d4d6cb7f78939f30257a12f"
+          }
+        },
+        {
+          "client_id": "627844066136-gnbcthg2f2l0ehlqq5uf84c5al22l2ev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGbYAWATrtE1havI1qSDbJ_1wQ89xryno"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "627844066136-gnbcthg2f2l0ehlqq5uf84c5al22l2ev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
