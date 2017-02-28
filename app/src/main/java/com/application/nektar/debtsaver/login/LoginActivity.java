@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,10 +15,19 @@ import android.widget.Toast;
 
 import com.application.nektar.debtsaver.NavigationActivity;
 import com.application.nektar.debtsaver.R;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by pc on 22.02.2017.
@@ -28,21 +38,36 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private ProgressBar mProgressBar;
     private Button mButtonSignup, mButtonLogin, mButtonReset;
+    private LoginButton mLoginButton;
+    private CallbackManager mCallbackManager;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        mFirebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        //Get Firebase auth instance
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         if (mFirebaseAuth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, NavigationActivity.class));
             finish();
         }
-
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         mEditTextEmail = (EditText) findViewById(R.id.edittext_email_login);
         mEditTextPassword = (EditText) findViewById(R.id.edittext_password_login);
@@ -52,6 +77,42 @@ public class LoginActivity extends AppCompatActivity {
         mButtonReset = (Button) findViewById(R.id.button_reset_password_login);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+
+        mLoginButton = (LoginButton) findViewById(R.id.login_button);
+        mLoginButton.setReadPermissions("email", "public_profile");
+
+        mCallbackManager = CallbackManager.Factory.create();
+
+        mLoginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                handleFacebookAccessToken(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    Intent intent = new Intent(LoginActivity.this, NavigationActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    // User is signed out
+                }
+            }
+        };
 
         mButtonSignup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,5 +165,24 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        mFirebaseAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mFirebaseAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 }
