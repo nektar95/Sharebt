@@ -55,18 +55,7 @@ public class NavigationActivity extends AppCompatActivity {
                         break;
                     }
                     case R.id.action_stats:{
-                        //mFragment = new StatsFragment();
-                        mFirebaseAuth.signOut();
-                        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
-                            @Override
-                            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                                FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                                if(user == null){
-                                    startActivity(new Intent(NavigationActivity.this, LoginActivity.class));
-                                    finish();
-                                }
-                            }
-                        };
+                        mFragment = new StatsFragment();
                         break;
                     }
                 }

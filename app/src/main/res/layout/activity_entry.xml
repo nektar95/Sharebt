@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  android:fitsSystemWindows="true">
 
     <LinearLayout
@@ -18,7 +19,7 @@
             android:layout_height="@dimen/logo_w_h"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_account_balance_black_48dp"  />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -54,13 +55,13 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
+            app:backgroundTint="@color/colorYellow"
             android:id="@+id/sign_up_button"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/colorAccent"
             android:text="@string/action_sign_in_short"
             android:textColor="@android:color/black"
             android:textStyle="bold" />

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Sharebt</string>
     <string name="facebook_app_id">1858369014442314</string>
+    <string name="web_client_google_id">627844066136-gnbcthg2f2l0ehlqq5uf84c5al22l2ev.apps.googleusercontent.com</string>
 
     <string name="home">Home</string>
     <string name="add_new">New</string>
