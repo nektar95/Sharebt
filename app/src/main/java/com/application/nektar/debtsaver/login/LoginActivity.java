@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.application.nektar.debtsaver.DebtContainer;
 import com.application.nektar.debtsaver.NavigationActivity;
 import com.application.nektar.debtsaver.R;
 import com.facebook.AccessToken;
@@ -242,6 +243,8 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
+                DebtContainer.get().setName(account.getDisplayName());
+                DebtContainer.get().setPhotoUrl(account.getPhotoUrl().toString());
                 firebaseAuthWithGoogle(account);
             } else {
                 Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();

@@ -5,6 +5,8 @@ package com.application.nektar.debtsaver;
  */
 public class DebtContainer {
     private static DebtContainer mContainer;
+    private String mName;
+    private String mPhotoUrl;
 
 
     public static DebtContainer get() {
@@ -15,5 +17,21 @@ public class DebtContainer {
     }
 
     private DebtContainer() {
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String name) {
+        mName = name;
+    }
+
+    public String getPhotoUrl() {
+        return mPhotoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        mPhotoUrl = photoUrl;
     }
 }
