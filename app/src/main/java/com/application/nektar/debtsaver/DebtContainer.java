@@ -16,7 +16,14 @@ public class DebtContainer {
         return mContainer;
     }
 
+    public void clearCache(){
+        mName = "";
+        mPhotoUrl ="";
+    }
+
     private DebtContainer() {
+        mPhotoUrl="";
+        mName="";
     }
 
     public String getName() {
