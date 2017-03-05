@@ -4,9 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Selection;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.NumberFormat;
-import java.util.Currency;
-import java.util.Locale;
 
 /**
  * Created by pc on 23.02.2017.
@@ -115,6 +111,9 @@ public class AddFragment extends Fragment {
 
                 String id =FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String value = mValueEdit.getText().toString();
+                if(value.isEmpty()){
+                    return;
+                }
                 value = value.replaceAll("[^0-9.]", "");
 
                 Double doubleValue = Double.valueOf(value)/100;

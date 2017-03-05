@@ -12,6 +12,10 @@
     <string name="name">Name</string>
     <string name="value">Value</string>
 
+    <string name="all_debts">All debts</string>
+    <string name="plus_debts">My debtors</string>
+    <string name="minus_debts">My obligation</string>
+
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>

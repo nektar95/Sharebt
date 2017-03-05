@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.application.nektar.debtsaver.login.LoginActivity;
 import com.application.nektar.debtsaver.navigation.AddFragment;
@@ -22,7 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
  * Created by pc on 22.02.2017.
  */
 
-public class NavigationActivity extends AppCompatActivity {
+public class NavigationActivity extends AppCompatActivity  {
     private Fragment mFragment;
     private AddFragment mAddFragment;
     private HomeFragment mHomeFragment;
@@ -30,6 +32,7 @@ public class NavigationActivity extends AppCompatActivity {
     private FragmentManager mFragmentManager;
     private BottomNavigationView mBottomNavigationView;
     private FirebaseAuth mFirebaseAuth;
+    private FrameLayout mFrameLayout;
     private FragmentTransaction mFragmentTransaction;
 
     @Override
@@ -38,6 +41,7 @@ public class NavigationActivity extends AppCompatActivity {
         setContentView(R.layout.navigation_activity);
 
         mBottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        mFrameLayout = (FrameLayout) findViewById(R.id.fragment_container);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
