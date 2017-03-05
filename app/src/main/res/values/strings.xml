@@ -7,6 +7,11 @@
     <string name="add_new">New</string>
     <string name="stats">Stats</string>
 
+    <string name="save">Add</string>
+    <string name="debt">Debt</string>
+    <string name="name">Name</string>
+    <string name="value">Value</string>
+
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>

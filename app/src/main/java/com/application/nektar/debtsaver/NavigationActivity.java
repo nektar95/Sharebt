@@ -24,9 +24,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class NavigationActivity extends AppCompatActivity {
     private Fragment mFragment;
+    private AddFragment mAddFragment;
+    private HomeFragment mHomeFragment;
+    private StatsFragment mStatsFragment;
     private FragmentManager mFragmentManager;
     private BottomNavigationView mBottomNavigationView;
     private FirebaseAuth mFirebaseAuth;
+    private FragmentTransaction mFragmentTransaction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,33 +42,84 @@ public class NavigationActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
 
         mFragmentManager = getSupportFragmentManager();
-        mFragment = HomeFragment.newInstance();
-        mFragmentManager.beginTransaction().add(R.id.fragment_container,mFragment).commit();
-
+        mHomeFragment = HomeFragment.newInstance();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.add(R.id.fragment_container,mHomeFragment).commit();
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                createFragments();
+                mFragmentTransaction = mFragmentManager.beginTransaction();
                 switch (item.getItemId()){
                     case R.id.action_home:{
-                        mFragment = new HomeFragment();
+                        if(mHomeFragment.isAdded()){
+                            mFragmentTransaction.show(mHomeFragment);
+                        }
+                        else{
+                            mFragmentTransaction.add(R.id.fragment_container,mHomeFragment);
+                        }
+
+                        if(mAddFragment.isAdded()){
+                            mFragmentTransaction.hide(mAddFragment);
+                        }
+                        if(mStatsFragment.isAdded()){
+                            mFragmentTransaction.hide(mStatsFragment);
+                        }
                         break;
                     }
                     case R.id.action_add:{
-                        mFragment = new AddFragment();
+                        if(mAddFragment.isAdded()){
+                            mFragmentTransaction.show(mAddFragment);
+                        }
+                        else{
+                            mFragmentTransaction.add(R.id.fragment_container,mAddFragment);
+                        }
+
+                        if(mHomeFragment.isAdded()){
+                            mFragmentTransaction.hide(mHomeFragment);
+                        }
+                        if(mStatsFragment.isAdded()){
+                            mFragmentTransaction.hide(mStatsFragment);
+                        }
+
                         break;
                     }
                     case R.id.action_stats:{
-                        mFragment = new StatsFragment();
+                        if(mStatsFragment.isAdded()){
+                            mFragmentTransaction.show(mStatsFragment);
+                        }
+                        else{
+                            mFragmentTransaction.add(R.id.fragment_container,mStatsFragment);
+                        }
+
+                        if(mAddFragment.isAdded()){
+                            mFragmentTransaction.hide(mAddFragment);
+                        }
+                        if(mHomeFragment.isAdded()){
+                            mFragmentTransaction.hide(mHomeFragment);
+                        }
                         break;
                     }
                 }
-                mFragmentManager.beginTransaction().replace(R.id.fragment_container,mFragment).commit();
+                mFragmentTransaction.commit();
                 return true;
             }
         });
 
 
+    }
+
+    private void createFragments(){
+        if(mStatsFragment==null){
+            mStatsFragment =  StatsFragment.newInstance();
+        }
+        if(mAddFragment==null){
+            mAddFragment =  AddFragment.newInstance();
+        }
+        if(mHomeFragment==null){
+            mHomeFragment =  HomeFragment.newInstance();
+        }
     }
 
     @Override

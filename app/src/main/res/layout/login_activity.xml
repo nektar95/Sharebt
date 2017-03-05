@@ -3,13 +3,12 @@
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
-
                                                  android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/white"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/activity_horizontal_margin">
@@ -53,7 +52,6 @@
                 android:textColorHint="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Login Button -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_marginLeft="10dp"
@@ -63,14 +61,11 @@
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/button_login_login"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                app:backgroundTint="@color/colorYellow"
-                android:text="@string/btn_login"
-                android:textColor="@android:color/black"
-
-                />
+                android:text="@string/btn_login"/>
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"
@@ -95,23 +90,23 @@
 
         <Button
             android:id="@+id/button_reset_password_login"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:text="@string/btn_forgot_password"
             android:textAllCaps="false"
-            android:textColor="#000000" />
+            android:textColor="#000000"/>
 
         <Button
             android:id="@+id/button_signup_login"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
             android:layout_marginBottom="10dp"
+            android:background="@null"
             android:text="@string/btn_link_to_register"
             android:textAllCaps="false"
             android:textColor="#000000"
-            android:textSize="15sp" />
+            android:textSize="15sp"/>
     </LinearLayout>
 
     <ProgressBar

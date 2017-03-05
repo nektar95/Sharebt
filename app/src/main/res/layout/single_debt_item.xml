@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@android:drawable/dialog_holo_light_frame"
+              android:id="@+id/single_debt_linear_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="false"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="36dp"
+        android:gravity="center"
+        android:longClickable="false"
+        android:measureWithLargestChild="false"
+        android:orientation="horizontal"
+        android:paddingTop="3dp"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/single_debt_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:paddingLeft="5dp"
+            android:text="Zakupy biedra"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/single_debt_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="500+"
+            android:textSize="15sp"/>
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/single_debt_check"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="4dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_check_black_24dp"/>
+
+</RelativeLayout>
