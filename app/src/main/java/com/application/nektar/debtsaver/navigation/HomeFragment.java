@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -28,18 +30,25 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
+import com.firebase.client.Firebase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +68,7 @@ public class HomeFragment extends Fragment {
     private List<SingleDebt> mDebtsList;
     private DebtAdapter mDebtAdapter;
     private Map<SingleDebt,String> mKeyList;
+    private String mId;
 
     public static HomeFragment newInstance(){
         return new HomeFragment();
@@ -82,11 +92,11 @@ public class HomeFragment extends Fragment {
         mDebtAdapter = new DebtAdapter(mDebtsList);
         mDebtsRecyclerView.setAdapter(mDebtAdapter);
 
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
-        String id =FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mId =FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        mDatabase.child(id).child("debtsList").addChildEventListener(new ChildEventListener() {
+        mDatabase.child(mId).child("debtsList").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 SingleDebt debt = dataSnapshot.getValue(SingleDebt.class);
@@ -170,7 +180,29 @@ public class HomeFragment extends Fragment {
                                     RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
                                     imageDrawable.setCircular(true);
                                     imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+                                    DebtContainer.get().setPhotoBitmap(imageBitmap);
                                     mProfileImageView.setImageDrawable(imageDrawable);
+
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                    byte[] data = baos.toByteArray();
+
+                                    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                                    StorageReference mountainsRef = storageRef.child(mId+".jpg");
+
+                                    UploadTask uploadTask = mountainsRef.putBytes(data);
+                                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception exception) {
+                                            // Handle unsuccessful uploads
+                                        }
+                                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            //Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                        }
+                                    });
+
                                 }
 
                                 @Override

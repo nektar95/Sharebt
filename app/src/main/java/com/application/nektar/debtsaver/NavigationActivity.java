@@ -17,6 +17,7 @@ import com.application.nektar.debtsaver.login.LoginActivity;
 import com.application.nektar.debtsaver.navigation.AddFragment;
 import com.application.nektar.debtsaver.navigation.HomeFragment;
 import com.application.nektar.debtsaver.navigation.StatsFragment;
+import com.application.nektar.debtsaver.navigation.UsersFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -25,10 +26,10 @@ import com.google.firebase.auth.FirebaseUser;
  */
 
 public class NavigationActivity extends AppCompatActivity  {
-    private Fragment mFragment;
     private AddFragment mAddFragment;
     private HomeFragment mHomeFragment;
     private StatsFragment mStatsFragment;
+    private UsersFragment mUsersFragment;
     private FragmentManager mFragmentManager;
     private BottomNavigationView mBottomNavigationView;
     private FirebaseAuth mFirebaseAuth;
@@ -70,6 +71,9 @@ public class NavigationActivity extends AppCompatActivity  {
                         if(mStatsFragment.isAdded()){
                             mFragmentTransaction.hide(mStatsFragment);
                         }
+                        if(mUsersFragment.isAdded()){
+                            mFragmentTransaction.hide(mUsersFragment);
+                        }
                         break;
                     }
                     case R.id.action_add:{
@@ -86,6 +90,9 @@ public class NavigationActivity extends AppCompatActivity  {
                         if(mStatsFragment.isAdded()){
                             mFragmentTransaction.hide(mStatsFragment);
                         }
+                        if(mUsersFragment.isAdded()){
+                            mFragmentTransaction.hide(mUsersFragment);
+                        }
 
                         break;
                     }
@@ -99,6 +106,28 @@ public class NavigationActivity extends AppCompatActivity  {
 
                         if(mAddFragment.isAdded()){
                             mFragmentTransaction.hide(mAddFragment);
+                        }
+                        if(mHomeFragment.isAdded()){
+                            mFragmentTransaction.hide(mHomeFragment);
+                        }
+                        if(mUsersFragment.isAdded()){
+                            mFragmentTransaction.hide(mUsersFragment);
+                        }
+                        break;
+                    }
+                    case R.id.action_users:{
+                        if(mUsersFragment.isAdded()){
+                            mFragmentTransaction.show(mUsersFragment);
+                        }
+                        else{
+                            mFragmentTransaction.add(R.id.fragment_container,mUsersFragment);
+                        }
+
+                        if(mAddFragment.isAdded()){
+                            mFragmentTransaction.hide(mAddFragment);
+                        }
+                        if(mStatsFragment.isAdded()){
+                            mFragmentTransaction.hide(mStatsFragment);
                         }
                         if(mHomeFragment.isAdded()){
                             mFragmentTransaction.hide(mHomeFragment);
@@ -123,6 +152,9 @@ public class NavigationActivity extends AppCompatActivity  {
         }
         if(mHomeFragment==null){
             mHomeFragment =  HomeFragment.newInstance();
+        }
+        if(mUsersFragment==null){
+            mUsersFragment =  UsersFragment.newInstance();
         }
     }
 

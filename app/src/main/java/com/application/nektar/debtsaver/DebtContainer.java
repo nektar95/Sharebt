@@ -1,5 +1,7 @@
 package com.application.nektar.debtsaver;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by pc on 24.02.2017.
  */
@@ -7,6 +9,7 @@ public class DebtContainer {
     private static DebtContainer mContainer;
     private String mName;
     private String mPhotoUrl;
+    private Bitmap mPhotoBitmap;
 
 
     public static DebtContainer get() {
@@ -24,6 +27,14 @@ public class DebtContainer {
     private DebtContainer() {
         mPhotoUrl="";
         mName="";
+    }
+
+    public Bitmap getPhotoBitmap() {
+        return mPhotoBitmap;
+    }
+
+    public void setPhotoBitmap(Bitmap photoBitmap) {
+        mPhotoBitmap = photoBitmap;
     }
 
     public String getName() {

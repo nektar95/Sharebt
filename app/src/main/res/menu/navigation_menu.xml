@@ -19,5 +19,11 @@
         android:icon="@drawable/ic_insert_chart_black_36dp"
         android:title="@string/stats"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_users"
+        android:enabled="true"
+        android:icon="@drawable/ic_insert_chart_black_36dp"
+        android:title="@string/users"
+        app:showAsAction="ifRoom" />
 
 </menu>
