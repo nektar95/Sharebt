@@ -5,7 +5,13 @@
               android:id="@+id/single_debt_linear_layout"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
-
+     <ImageView
+            android:id="@+id/single_debt_user_picture"
+            android:layout_width="30dp"
+            android:layout_margin="4dp"
+            android:layout_alignParentLeft="true"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_account_circle_black_48dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,6 +19,7 @@
         android:layout_centerInParent="false"
         android:layout_centerVertical="true"
         android:layout_marginRight="36dp"
+        android:layout_marginLeft="36dp"
         android:gravity="center"
         android:longClickable="false"
         android:measureWithLargestChild="false"

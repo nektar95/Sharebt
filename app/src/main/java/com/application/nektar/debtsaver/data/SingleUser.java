@@ -6,7 +6,10 @@ package com.application.nektar.debtsaver.data;
 
 public class SingleUser {
     private String mName;
-    private String mPhotoUrl;
+
+    public SingleUser(){
+
+    }
 
     public SingleUser(String name) {
         mName = name;
@@ -18,13 +21,5 @@ public class SingleUser {
 
     public void setName(String name) {
         mName = name;
-    }
-
-    public String getPhotoUrl() {
-        return mPhotoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        mPhotoUrl = photoUrl;
     }
 }

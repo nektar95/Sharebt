@@ -14,6 +14,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,6 +101,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 SingleDebt debt = dataSnapshot.getValue(SingleDebt.class);
+
                 mKeyList.put(debt,dataSnapshot.getKey());
                 mDebtsList.add(debt);
                 mDebtAdapter.notifyDataSetChanged();
@@ -159,11 +161,13 @@ public class HomeFragment extends Fragment {
                     catch (JSONException je){
                         je.printStackTrace();
                     }
-                    mNameTextView.setText(object.optString("name"));
-                } else {
-                    mNameTextView.setText(DebtContainer.get().getName());
+                    DebtContainer.get().setName(object.optString("name"));
                 }
 
+                mNameTextView.setText(DebtContainer.get().getName());
+
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+                mDatabase.child(mId).child("informations").child("name").setValue(DebtContainer.get().getName());
 
                 if(DebtContainer.get().getPhotoUrl().isEmpty()){
                     Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_account_circle_black_48dp);
@@ -253,6 +257,7 @@ public class HomeFragment extends Fragment {
         private TextView mNameTextView;
         private TextView mValueTextView;
         private ImageView mCheckImage;
+        private ImageView mUserPicture;
 
         public void clearAnimation(){
             mLinearLayout.clearAnimation();
@@ -264,6 +269,7 @@ public class HomeFragment extends Fragment {
             mNameTextView = (TextView) itemView.findViewById(R.id.single_debt_name);
             mValueTextView = (TextView) itemView.findViewById(R.id.single_debt_value);
             mCheckImage = (ImageView) itemView.findViewById(R.id.single_debt_check);
+            mUserPicture = (ImageView) itemView.findViewById(R.id.single_debt_user_picture);
         }
 
         public void bindResult(final SingleDebt singleDebt){
@@ -274,6 +280,41 @@ public class HomeFragment extends Fragment {
             } else {
                 mValueTextView.setTextColor(ContextCompat.getColor(getActivity(),R.color.red));
             }
+
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            if (singleDebt.getUserList().size()==1) {
+                storageRef.child(singleDebt.getUserList().get(0).getName() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.with(getContext()).load(uri)
+                                .resize(35, 35)
+                                .centerCrop()
+                                .onlyScaleDown()
+                                .into(mUserPicture, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Bitmap imageBitmap = ((BitmapDrawable) mUserPicture.getDrawable()).getBitmap();
+                                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
+                                        imageDrawable.setCircular(true);
+                                        imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_account_circle_black_48dp);
+                                        mUserPicture.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
+                                    }
+                                });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
+            }
+
             mCheckImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
