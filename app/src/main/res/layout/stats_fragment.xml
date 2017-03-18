@@ -68,4 +68,9 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/stats_fragment_pie_chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </LinearLayout>

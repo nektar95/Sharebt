@@ -60,6 +60,7 @@ public class AddFragment extends Fragment {
     private Button mAddButton;
     private EditText mNameEdit;
     private EditText mValueEdit;
+    private TextView mCurrencyTextView;
     private Switch mSwitch;
     private RecyclerView mUsersRecyclerView;
     private UserAdapter mUsersAdapter;
@@ -67,7 +68,7 @@ public class AddFragment extends Fragment {
     private List<SingleUser> mCheckedUsers;
 
     private class UserHolder extends RecyclerView.ViewHolder{
-        private LinearLayout mLinearLayout;
+        private RelativeLayout mLinearLayout;
         private TextView mNameTextView;
         private ImageView mProfileImage;
         private boolean mChecked;
@@ -78,7 +79,7 @@ public class AddFragment extends Fragment {
 
         public UserHolder(View itemView) {
             super(itemView);
-            mLinearLayout = (LinearLayout) itemView.findViewById(R.id.single_user_linear_layout);
+            mLinearLayout = (RelativeLayout) itemView.findViewById(R.id.single_user_linear_layout);
             mProfileImage = (ImageView) itemView.findViewById(R.id.user_picture_single);
             mNameTextView = (TextView) itemView.findViewById(R.id.user_name_textview);
             mChecked = true;
@@ -92,6 +93,7 @@ public class AddFragment extends Fragment {
                 public void onClick(View v) {
                     if(mChecked){
                         mLinearLayout.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.grey));
+                        //mLinearLayout.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.rounded_choose_shape));
                         mCheckedUsers.add(singleUser);
                         mChecked = false;
                     } else {
@@ -124,7 +126,7 @@ public class AddFragment extends Fragment {
                 @Override
                 public void onSuccess(Uri uri) {
                     Picasso.with(getContext()).load(uri)
-                            .resize(200, 200)
+                            .resize(100, 100)
                             .centerCrop()
                             .onlyScaleDown()
                             .into(mProfileImage, new Callback() {
@@ -208,60 +210,9 @@ public class AddFragment extends Fragment {
         mNameEdit = (EditText) view.findViewById(R.id.add_fragment_debt_name);
         mValueEdit = (EditText) view.findViewById(R.id.add_fragment_debt_value);
         mSwitch = (Switch) view.findViewById(R.id.add_fragment_debt_switch);
+        mCurrencyTextView = (TextView) view.findViewById(R.id.add_fragment_debt_currency);
 
-        mValueEdit.addTextChangedListener(new TextWatcher() {
-            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-            private String current = "";
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                if(!s.toString().equals(current))
-                {
-                    mValueEdit.removeTextChangedListener(this);
-
-                    int selection = mValueEdit.getSelectionStart();
-
-                    String replaceable = String.format("[%s,\\s]", NumberFormat.getCurrencyInstance().getCurrency().getSymbol());
-                    String cleanString = s.toString().replaceAll(replaceable, "");
-
-                    double price;
-
-                    try
-                    {
-                        price = Double.parseDouble(cleanString);
-                    }
-                    catch(java.lang.NumberFormatException e)
-                    {
-                        price = 0;
-                    }
-
-                    int shrink = 1;
-                    if(!(s.toString().contains(".")))
-                    {
-                        shrink = 100;
-                    }
-
-                    String formated = currencyFormat.format((price / shrink));
-
-                    current = formated;
-                    mValueEdit.setText(formated);
-                    mValueEdit.setSelection(Math.min(selection, mValueEdit.getText().length()));
-
-                    mValueEdit.addTextChangedListener(this);
-                }
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-        });
+        mCurrencyTextView.setText(NumberFormat.getCurrencyInstance().getCurrency().getSymbol());
 
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override

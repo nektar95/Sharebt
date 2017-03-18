@@ -313,6 +313,8 @@ public class HomeFragment extends Fragment {
                         // Handle any errors
                     }
                 });
+            } else {
+
             }
 
             mCheckImage.setOnClickListener(new View.OnClickListener() {

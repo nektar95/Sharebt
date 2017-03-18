@@ -185,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
         mButtonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = mEditTextEmail.getText().toString();
+                final String email = mEditTextEmail.getText().toString();
                 final String password = mEditTextPassword.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
@@ -212,6 +212,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                             }
                         } else {
+                            DebtContainer.get().setName(email);
                             Intent intent = new Intent(LoginActivity.this, NavigationActivity.class);
                             startActivity(intent);
                             finish();

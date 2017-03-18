@@ -13,7 +13,7 @@
     <string name="name">Name</string>
     <string name="value">Value</string>
 
-    <string name="all_debts">All debts</string>
+    <string name="all_debts">Balance</string>
     <string name="plus_debts">My debtors</string>
     <string name="minus_debts">My obligation</string>
 

@@ -49,19 +49,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="6">
 
             <Switch
                 android:id="@+id/add_fragment_debt_switch"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="@string/debt"
                 android:textSize="20sp"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="5dp"
@@ -71,23 +71,38 @@
                 android:textColor="@android:color/black"
                 android:textSize="20sp"/>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_weight="1">
-
-                <EditText
-                    android:id="@+id/add_fragment_debt_value"
-                    android:layout_width="170dp"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:weightSum="10"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:inputType="numberDecimal"
-                    android:textColor="@android:color/black"
+                    android:layout_weight="9"
+                    android:layout_gravity="end">
 
+                    <EditText
+                        android:id="@+id/add_fragment_debt_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:inputType="numberDecimal"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/colorPrimaryDark"
+                        android:textSize="24sp"/>
+                </android.support.design.widget.TextInputLayout>
+                <TextView
+                    android:id="@+id/add_fragment_debt_currency"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
                     android:textColorHint="@color/colorPrimaryDark"
-                    android:textSize="24sp"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:textSize="18sp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

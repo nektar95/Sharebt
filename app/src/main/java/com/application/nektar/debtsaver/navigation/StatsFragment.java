@@ -1,8 +1,10 @@
 package com.application.nektar.debtsaver.navigation;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,14 @@ import android.widget.TextView;
 
 import com.application.nektar.debtsaver.R;
 import com.application.nektar.debtsaver.data.SingleDebt;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -35,8 +45,9 @@ public class StatsFragment extends Fragment {
     private TextView mAllDebtTextView;
     private TextView mMinusDebtTextView;
     private TextView mPlusDebtTextView;
-    private Double mPlusDebts;
-    private Double mMinusDebts;
+    private float mPlusDebts;
+    private float mMinusDebts;
+    private PieChart mPieChart;
 
     public static StatsFragment newInstance(){
         return new StatsFragment();
@@ -49,6 +60,7 @@ public class StatsFragment extends Fragment {
         mAllDebtTextView = (TextView) view.findViewById(R.id.stats_fragment_all_debts);
         mMinusDebtTextView = (TextView) view.findViewById(R.id.stats_fragment_minus_debts);
         mPlusDebtTextView = (TextView) view.findViewById(R.id.stats_fragment_plus_debts);
+        mPieChart = (PieChart) view.findViewById(R.id.stats_fragment_pie_chart);
 
         mDebtsList = new ArrayList<>();
         mKeyList = new HashMap<>();
@@ -60,8 +72,8 @@ public class StatsFragment extends Fragment {
         mDatabase.child(id).child("debtsList").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mPlusDebts = 0d;
-                mMinusDebts = 0d;
+                mPlusDebts = 0f;
+                mMinusDebts = 0f;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     SingleDebt debt = snapshot.getValue(SingleDebt.class);
@@ -87,5 +99,23 @@ public class StatsFragment extends Fragment {
         mPlusDebtTextView.setText(String.format(Locale.getDefault(),"%.2f",mPlusDebts));
         mMinusDebtTextView.setText(String.format(Locale.getDefault(),"%.2f",mMinusDebts));
         mAllDebtTextView.setText(String.format(Locale.getDefault(),"%.2f",mMinusDebts+mPlusDebts));
+        List<PieEntry> entries = new ArrayList<>();
+        entries.add(new PieEntry(mPlusDebts,"Debts"));
+        entries.add(new PieEntry(mMinusDebts*(-1),"Obligations"));
+
+        PieDataSet dataSet = new PieDataSet(entries,"");
+
+        dataSet.setColors(ContextCompat.getColor(getActivity(),R.color.green),ContextCompat.getColor(getActivity(),R.color.red));
+        dataSet.setValueTextSize(18f);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueLineColor(Color.BLACK);
+        dataSet.setHighlightEnabled(true);
+
+        PieData data = new PieData(dataSet);
+
+        mPieChart.setData(data);
+        mPieChart.getDescription().setText("");
+        mPieChart.invalidate();
+
     }
 }
