@@ -231,7 +231,7 @@ public class AddFragment extends Fragment {
                 }
                 value = value.replaceAll("[^0-9.]", "");
 
-                Double doubleValue = Double.valueOf(value)/100;
+                Double doubleValue = Double.valueOf(value);
 
                 if(mSwitch.isChecked()){
                     doubleValue = doubleValue*(-1);

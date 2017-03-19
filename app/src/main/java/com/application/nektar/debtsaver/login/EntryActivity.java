@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.application.nektar.debtsaver.DebtContainer;
 import com.application.nektar.debtsaver.NavigationActivity;
 import com.application.nektar.debtsaver.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +24,7 @@ public class EntryActivity extends AppCompatActivity {
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class EntryActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = inputEmail.getText().toString().trim();
+                email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
 
                 if (TextUtils.isEmpty(email)) {
@@ -88,6 +90,7 @@ public class EntryActivity extends AppCompatActivity {
                             Toast.makeText(EntryActivity.this, "Authentication failed." + task.getException(),
                                     Toast.LENGTH_SHORT).show();
                         } else {
+                            DebtContainer.get().setName(email);
                             startActivity(new Intent(EntryActivity.this, NavigationActivity.class));
                             finish();
                         }

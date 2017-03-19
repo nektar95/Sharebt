@@ -20,6 +20,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -103,15 +105,27 @@ public class StatsFragment extends Fragment {
         entries.add(new PieEntry(mPlusDebts,"Debts"));
         entries.add(new PieEntry(mMinusDebts*(-1),"Obligations"));
 
-        PieDataSet dataSet = new PieDataSet(entries,"");
+        final PieDataSet dataSet = new PieDataSet(entries,"");
 
         dataSet.setColors(ContextCompat.getColor(getActivity(),R.color.green),ContextCompat.getColor(getActivity(),R.color.red));
         dataSet.setValueTextSize(18f);
-        dataSet.setValueTextColor(Color.BLACK);
-        dataSet.setValueLineColor(Color.BLACK);
+        dataSet.setValueTextColor(Color.WHITE);
         dataSet.setHighlightEnabled(true);
 
         PieData data = new PieData(dataSet);
+
+        mPieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
 
         mPieChart.setData(data);
         mPieChart.getDescription().setText("");

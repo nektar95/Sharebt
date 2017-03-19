@@ -287,7 +287,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.with(getContext()).load(uri)
-                                .resize(35, 35)
+                                .resize(100, 100)
                                 .centerCrop()
                                 .onlyScaleDown()
                                 .into(mUserPicture, new Callback() {
@@ -314,7 +314,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
             } else {
-
+                //+1 image and opening animation with all users later
             }
 
             mCheckImage.setOnClickListener(new View.OnClickListener() {
