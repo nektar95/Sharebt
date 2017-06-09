@@ -15,25 +15,26 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by pc on 22.02.2017.
  */
 
 public class ResetPasswordActivity extends AppCompatActivity {
-    private EditText inputEmail;
-    private Button btnReset, btnBack;
+    @BindView(R.id.edittext_email_reset) EditText inputEmail;
+    @BindView(R.id.button_reset_password_reset) Button btnReset;
+    @BindView(R.id.button_back_reset) Button btnBack;
+    @BindView(R.id.progressBar_reset) ProgressBar progressBar;
+
     private FirebaseAuth auth;
-    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reset_password_activity);
-
-        inputEmail = (EditText) findViewById(R.id.edittext_email_reset);
-        btnReset = (Button) findViewById(R.id.button_reset_password_reset);
-        btnBack = (Button) findViewById(R.id.button_back_reset);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar_reset);
+        ButterKnife.bind(this);
 
         auth = FirebaseAuth.getInstance();
 

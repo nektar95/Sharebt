@@ -20,27 +20,29 @@ import com.application.nektar.debtsaver.navigation.StatsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by pc on 22.02.2017.
  */
 
 public class NavigationActivity extends AppCompatActivity  {
+    @BindView(R.id.fragment_container) FrameLayout mFrameLayout;
+    @BindView(R.id.bottom_navigation) BottomNavigationView mBottomNavigationView;
+
     private AddFragment mAddFragment;
     private HomeFragment mHomeFragment;
     private StatsFragment mStatsFragment;
     private FragmentManager mFragmentManager;
-    private BottomNavigationView mBottomNavigationView;
     private FirebaseAuth mFirebaseAuth;
-    private FrameLayout mFrameLayout;
     private FragmentTransaction mFragmentTransaction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_activity);
-
-        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        mFrameLayout = (FrameLayout) findViewById(R.id.fragment_container);
+        ButterKnife.bind(this);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
@@ -49,10 +51,11 @@ public class NavigationActivity extends AppCompatActivity  {
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.add(R.id.fragment_container,mHomeFragment).commit();
 
+        createFragments();
+
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                createFragments();
                 mFragmentTransaction = mFragmentManager.beginTransaction();
                 switch (item.getItemId()){
                     case R.id.action_home:{

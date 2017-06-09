@@ -34,6 +34,7 @@ import com.application.nektar.debtsaver.DebtContainer;
 import com.application.nektar.debtsaver.R;
 import com.application.nektar.debtsaver.data.SingleDebt;
 import com.application.nektar.debtsaver.data.SingleUser;
+import com.application.nektar.debtsaver.navigation.add_new.UserAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,21 +53,25 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by pc on 23.02.2017.
  */
 
 public class AddFragment extends Fragment {
-    private Button mAddButton;
-    private EditText mNameEdit;
-    private EditText mValueEdit;
-    private TextView mCurrencyTextView;
-    private Switch mSwitch;
-    private RecyclerView mUsersRecyclerView;
+    @BindView(R.id.add_fragment_debt_button) Button mAddButton;
+    @BindView(R.id.add_fragment_debt_name) EditText mNameEdit;
+    @BindView(R.id.add_fragment_debt_value) EditText mValueEdit;
+    @BindView(R.id.add_fragment_debt_currency) TextView mCurrencyTextView;
+    @BindView(R.id.add_fragment_debt_switch) Switch mSwitch;
+    @BindView(R.id.recycler_view_home_fragment) RecyclerView mUsersRecyclerView;
+
     private UserAdapter mUsersAdapter;
     private List<SingleUser> mUserList;
     private List<SingleUser> mCheckedUsers;
-
+/*
     private class UserHolder extends RecyclerView.ViewHolder{
         private RelativeLayout mLinearLayout;
         private TextView mNameTextView;
@@ -197,7 +202,7 @@ public class AddFragment extends Fragment {
             return mSingleUsers.size();
         }
     }
-
+*/
     public static AddFragment newInstance(){
         return new AddFragment();
     }
@@ -206,11 +211,7 @@ public class AddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_fragment, container, false);
 
-        mAddButton = (Button) view.findViewById(R.id.add_fragment_debt_button);
-        mNameEdit = (EditText) view.findViewById(R.id.add_fragment_debt_name);
-        mValueEdit = (EditText) view.findViewById(R.id.add_fragment_debt_value);
-        mSwitch = (Switch) view.findViewById(R.id.add_fragment_debt_switch);
-        mCurrencyTextView = (TextView) view.findViewById(R.id.add_fragment_debt_currency);
+        ButterKnife.bind(this, view);
 
         mCurrencyTextView.setText(NumberFormat.getCurrencyInstance().getCurrency().getSymbol());
 
@@ -245,8 +246,6 @@ public class AddFragment extends Fragment {
                 mValueEdit.setText("");
             }
         });
-
-        mUsersRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_home_fragment);
 
         mUserList = new ArrayList<>();
         mCheckedUsers = new ArrayList<>();

@@ -37,19 +37,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by pc on 23.02.2017.
  */
 
 public class StatsFragment extends Fragment {
+    @BindView(R.id.stats_fragment_all_debts) TextView mAllDebtTextView;
+    @BindView(R.id.stats_fragment_minus_debts) TextView mMinusDebtTextView;
+    @BindView(R.id.stats_fragment_plus_debts) TextView mPlusDebtTextView;
+    @BindView(R.id.stats_fragment_pie_chart) PieChart mPieChart;
+
     private List<SingleDebt> mDebtsList;
     private Map<SingleDebt,String> mKeyList;
-    private TextView mAllDebtTextView;
-    private TextView mMinusDebtTextView;
-    private TextView mPlusDebtTextView;
     private float mPlusDebts;
     private float mMinusDebts;
-    private PieChart mPieChart;
 
     public static StatsFragment newInstance(){
         return new StatsFragment();
@@ -58,11 +62,7 @@ public class StatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.stats_fragment, container, false);
-
-        mAllDebtTextView = (TextView) view.findViewById(R.id.stats_fragment_all_debts);
-        mMinusDebtTextView = (TextView) view.findViewById(R.id.stats_fragment_minus_debts);
-        mPlusDebtTextView = (TextView) view.findViewById(R.id.stats_fragment_plus_debts);
-        mPieChart = (PieChart) view.findViewById(R.id.stats_fragment_pie_chart);
+        ButterKnife.bind(this,view);
 
         mDebtsList = new ArrayList<>();
         mKeyList = new HashMap<>();

@@ -27,6 +27,7 @@ import com.application.nektar.debtsaver.DebtContainer;
 import com.application.nektar.debtsaver.R;
 import com.application.nektar.debtsaver.data.SingleDebt;
 import com.application.nektar.debtsaver.login.LoginActivity;
+import com.application.nektar.debtsaver.navigation.home.DebtAdapter;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
@@ -56,16 +57,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by pc on 23.02.2017.
  */
 
 public class HomeFragment extends Fragment {
-    private RecyclerView mDebtsRecyclerView;
-    private ImageView mSignOutButton;
+    @BindView(R.id.home_sign_out) ImageView mSignOutButton;
+    @BindView(R.id.home_name_textview) TextView mNameTextView;
+    @BindView(R.id.profile_picture_home_another) ImageView mProfileImageView;
+    @BindView(R.id.recycler_view_home_fragment) RecyclerView mDebtsRecyclerView;;
+
     private GraphRequest mGraphRequest;
-    private TextView mNameTextView;
-    private ImageView mProfileImageView;
     private List<SingleDebt> mDebtsList;
     private DebtAdapter mDebtAdapter;
     private Map<SingleDebt,String> mKeyList;
@@ -81,10 +86,7 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-        mSignOutButton = (ImageView) view.findViewById(R.id.home_sign_out);
-        mNameTextView = (TextView) view.findViewById(R.id.home_name_textview);
-        mProfileImageView = (ImageView) view.findViewById(R.id.profile_picture_home_another);
-        mDebtsRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_home_fragment);
+        ButterKnife.bind(this,view);
 
         mDebtsList = new ArrayList<>();
         mKeyList = new HashMap<>();
@@ -206,7 +208,6 @@ public class HomeFragment extends Fragment {
                                             //Uri downloadUrl = taskSnapshot.getDownloadUrl();
                                         }
                                     });
-
                                 }
 
                                 @Override
@@ -251,7 +252,7 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
-
+/*
     private class DebtHolder extends RecyclerView.ViewHolder{
         private RelativeLayout mLinearLayout;
         private TextView mNameTextView;
@@ -375,4 +376,5 @@ public class HomeFragment extends Fragment {
             return mSingleDebts.size();
         }
     }
+    */
 }

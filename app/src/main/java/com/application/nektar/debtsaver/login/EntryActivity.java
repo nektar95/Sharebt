@@ -19,10 +19,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EntryActivity extends AppCompatActivity {
-    private EditText inputEmail,inputPassword;
-    private Button btnSignIn, btnSignUp, btnResetPassword;
-    private ProgressBar progressBar;
+    @BindView(R.id.edittext_email_entry) EditText inputEmail;
+    @BindView(R.id.edittext_password_entry) EditText inputPassword;
+    @BindView(R.id.sign_in_button) Button btnSignIn;
+    @BindView(R.id.sign_up_button) Button btnSignUp;
+    @BindView(R.id.button_reset_password_entry) Button btnResetPassword;
+    @BindView(R.id.progressBar_entry) ProgressBar progressBar;
     private FirebaseAuth auth;
     private String email;
 
@@ -30,15 +36,9 @@ public class EntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
+        ButterKnife.bind(this);
 
         auth = FirebaseAuth.getInstance();
-
-        btnSignIn = (Button) findViewById(R.id.sign_in_button);
-        btnSignUp = (Button) findViewById(R.id.sign_up_button);
-        inputEmail = (EditText) findViewById(R.id.edittext_email_entry);
-        inputPassword = (EditText) findViewById(R.id.edittext_password_entry);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar_entry);
-        btnResetPassword = (Button) findViewById(R.id.button_reset_password_entry);
 
         btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override

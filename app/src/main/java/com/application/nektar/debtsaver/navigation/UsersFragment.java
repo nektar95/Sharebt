@@ -44,13 +44,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by pc on 15.03.2017.
  */
 
 public class UsersFragment extends Fragment {
 
-    private RecyclerView mUsersRecyclerView;
+    @BindView(R.id.recycler_view_home_fragment) RecyclerView mUsersRecyclerView;
     private UserAdapter mUsersAdapter;
     private List<SingleUser> mUserList;
 
@@ -62,8 +65,7 @@ public class UsersFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.users_fragment, container, false);
-
-        mUsersRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_home_fragment);
+        ButterKnife.bind(this,view);
 
         mUserList = new ArrayList<>();
 
@@ -181,8 +183,6 @@ public class UsersFragment extends Fragment {
         public void onBindViewHolder(UserHolder holder, int position) {
             SingleUser singleDebt = mSingleUsers.get(position);
             holder.bindResult(singleDebt);
-
-
         }
 
         @Override
