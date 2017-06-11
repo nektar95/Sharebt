@@ -1,24 +1,17 @@
 package com.application.nektar.debtsaver;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
-import com.application.nektar.debtsaver.login.LoginActivity;
 import com.application.nektar.debtsaver.navigation.AddFragment;
 import com.application.nektar.debtsaver.navigation.HomeFragment;
 import com.application.nektar.debtsaver.navigation.StatsFragment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,14 +21,13 @@ import butterknife.ButterKnife;
  */
 
 public class NavigationActivity extends AppCompatActivity  {
-    @BindView(R.id.fragment_container) FrameLayout mFrameLayout;
+    //@BindView(R.id.fragment_container) FrameLayout mFrameLayout;
     @BindView(R.id.bottom_navigation) BottomNavigationView mBottomNavigationView;
 
     private AddFragment mAddFragment;
     private HomeFragment mHomeFragment;
     private StatsFragment mStatsFragment;
     private FragmentManager mFragmentManager;
-    private FirebaseAuth mFirebaseAuth;
     private FragmentTransaction mFragmentTransaction;
 
     @Override
@@ -44,15 +36,12 @@ public class NavigationActivity extends AppCompatActivity  {
         setContentView(R.layout.navigation_activity);
         ButterKnife.bind(this);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-
         mFragmentManager = getSupportFragmentManager();
-        mHomeFragment = HomeFragment.newInstance();
         mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.add(R.id.fragment_container,mHomeFragment).commit();
-
         createFragments();
-
+        if(savedInstanceState == null) { //primitive way
+            mFragmentTransaction.add(R.id.fragment_container, mHomeFragment).commit();
+        }
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -112,8 +101,6 @@ public class NavigationActivity extends AppCompatActivity  {
                 return true;
             }
         });
-
-
     }
 
     private void createFragments(){

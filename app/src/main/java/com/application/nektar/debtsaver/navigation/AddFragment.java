@@ -70,7 +70,6 @@ public class AddFragment extends Fragment {
 
     private UserAdapter mUsersAdapter;
     private List<SingleUser> mUserList;
-    private List<SingleUser> mCheckedUsers;
 /*
     private class UserHolder extends RecyclerView.ViewHolder{
         private RelativeLayout mLinearLayout;
@@ -239,7 +238,7 @@ public class AddFragment extends Fragment {
                 }
 
                 SingleDebt debt = new SingleDebt(mNameEdit.getText().toString(),doubleValue);
-                debt.getUserList().addAll(mCheckedUsers);
+                debt.getUserList().addAll(DebtContainer.get().getCheckedUsers());
                 mDatabase.child(id).child("debtsList").push().setValue(debt);
 
                 mNameEdit.setText("");
@@ -248,7 +247,6 @@ public class AddFragment extends Fragment {
         });
 
         mUserList = new ArrayList<>();
-        mCheckedUsers = new ArrayList<>();
 
         mUsersRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mUsersAdapter = new UserAdapter(mUserList);

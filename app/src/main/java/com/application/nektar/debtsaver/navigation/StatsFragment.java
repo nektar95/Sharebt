@@ -50,8 +50,6 @@ public class StatsFragment extends Fragment {
     @BindView(R.id.stats_fragment_plus_debts) TextView mPlusDebtTextView;
     @BindView(R.id.stats_fragment_pie_chart) PieChart mPieChart;
 
-    private List<SingleDebt> mDebtsList;
-    private Map<SingleDebt,String> mKeyList;
     private float mPlusDebts;
     private float mMinusDebts;
 
@@ -63,9 +61,6 @@ public class StatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.stats_fragment, container, false);
         ButterKnife.bind(this,view);
-
-        mDebtsList = new ArrayList<>();
-        mKeyList = new HashMap<>();
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
 

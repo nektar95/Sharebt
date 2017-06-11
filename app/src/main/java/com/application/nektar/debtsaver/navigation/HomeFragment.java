@@ -59,6 +59,9 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by pc on 23.02.2017.
@@ -71,9 +74,7 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.recycler_view_home_fragment) RecyclerView mDebtsRecyclerView;;
 
     private GraphRequest mGraphRequest;
-    private List<SingleDebt> mDebtsList;
     private DebtAdapter mDebtAdapter;
-    private Map<SingleDebt,String> mKeyList;
     private String mId;
 
     public static HomeFragment newInstance(){
@@ -88,12 +89,32 @@ public class HomeFragment extends Fragment {
 
         ButterKnife.bind(this,view);
 
-        mDebtsList = new ArrayList<>();
-        mKeyList = new HashMap<>();
-
         mDebtsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mDebtAdapter = new DebtAdapter(mDebtsList);
+        mDebtAdapter = new DebtAdapter(DebtContainer.get().getDebtsList());
         mDebtsRecyclerView.setAdapter(mDebtAdapter);
+
+        Observable<List<SingleDebt>> listObservable = Observable.just(DebtContainer.get().getDebtsList());
+        listObservable.subscribe(new Observer<List<SingleDebt>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(List<SingleDebt> value) {
+                mDebtAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
 
         final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
@@ -104,8 +125,8 @@ public class HomeFragment extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 SingleDebt debt = dataSnapshot.getValue(SingleDebt.class);
 
-                mKeyList.put(debt,dataSnapshot.getKey());
-                mDebtsList.add(debt);
+                DebtContainer.get().getKeyList().put(debt,dataSnapshot.getKey());
+                DebtContainer.get().getDebtsList().add(debt);
                 mDebtAdapter.notifyDataSetChanged();
             }
 
@@ -116,9 +137,9 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                mKeyList.remove(dataSnapshot.getKey());
+                DebtContainer.get().getKeyList().remove(dataSnapshot.getKey());
                 SingleDebt debt = dataSnapshot.getValue(SingleDebt.class);
-                mDebtsList.remove(debt);
+                DebtContainer.get().getDebtsList().remove(debt);
                 mDebtAdapter.notifyDataSetChanged();
             }
 

@@ -1,5 +1,6 @@
 package com.application.nektar.debtsaver.navigation.add_new;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -30,27 +31,31 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Aleksander on 08.06.2017.
  */
 
 public class UserHolder extends RecyclerView.ViewHolder{
-    private RelativeLayout mLinearLayout;
-    private TextView mNameTextView;
-    private ImageView mProfileImage;
+    @BindView(R.id.single_user_linear_layout) RelativeLayout mLinearLayout;
+    @BindView(R.id.user_name_textview) TextView mNameTextView;
+    @BindView(R.id.user_picture_single) ImageView mProfileImage;
+
     private boolean mChecked;
+    private Context context;
 
     public void clearAnimation(){
         mLinearLayout.clearAnimation();
     }
 
-    public UserHolder(View itemView) {
+    public UserHolder(View itemView, Context context) {
         super(itemView);
-        mLinearLayout = (RelativeLayout) itemView.findViewById(R.id.single_user_linear_layout);
-        mProfileImage = (ImageView) itemView.findViewById(R.id.user_picture_single);
-        mNameTextView = (TextView) itemView.findViewById(R.id.user_name_textview);
-        mChecked = true;
 
+        ButterKnife.bind(this,itemView);
+        mChecked = true;
+        this.context = context;
     }
 
     public void bindResult(final SingleUser singleUser){
@@ -58,13 +63,13 @@ public class UserHolder extends RecyclerView.ViewHolder{
             @Override
             public void onClick(View v) {
                 if(mChecked){
-                    mLinearLayout.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.grey));
+                    mLinearLayout.setBackgroundColor(ContextCompat.getColor(context,R.color.grey));
                     //mLinearLayout.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.rounded_choose_shape));
-                    mCheckedUsers.add(singleUser);
+                    DebtContainer.get().getCheckedUsers().add(singleUser);
                     mChecked = false;
                 } else {
                     mLinearLayout.setBackgroundColor(Color.TRANSPARENT);
-                    mCheckedUsers.remove(singleUser);
+                    DebtContainer.get().getCheckedUsers().remove(singleUser);
                     mChecked = true;
                 }
             }
@@ -91,7 +96,7 @@ public class UserHolder extends RecyclerView.ViewHolder{
         storageRef.child(singleUser.getName()+".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.with(getContext()).load(uri)
+                Picasso.with(context).load(uri)
                         .resize(100, 100)
                         .centerCrop()
                         .onlyScaleDown()
@@ -99,7 +104,7 @@ public class UserHolder extends RecyclerView.ViewHolder{
                             @Override
                             public void onSuccess() {
                                 Bitmap imageBitmap = ((BitmapDrawable) mProfileImage.getDrawable()).getBitmap();
-                                RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(getResources(), imageBitmap);
+                                RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), imageBitmap);
                                 imageDrawable.setCircular(true);
                                 imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
                                 DebtContainer.get().setPhotoBitmap(imageBitmap);
@@ -109,8 +114,8 @@ public class UserHolder extends RecyclerView.ViewHolder{
 
                             @Override
                             public void onError() {
-                                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_account_circle_black_48dp);
-                                mProfileImage.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
+                                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_account_circle_black_48dp);
+                                mProfileImage.setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
                             }
                         });
             }

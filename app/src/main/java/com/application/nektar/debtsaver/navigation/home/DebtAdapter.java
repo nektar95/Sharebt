@@ -6,10 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 
+import com.application.nektar.debtsaver.DebtContainer;
 import com.application.nektar.debtsaver.R;
 import com.application.nektar.debtsaver.data.SingleDebt;
 
 import java.util.List;
+
+import io.reactivex.Observable;
 
 /**
  * Created by Aleksander on 08.06.2017.
@@ -25,9 +28,10 @@ public class DebtAdapter extends RecyclerView.Adapter<DebtHolder> {
 
         @Override
         public DebtHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(R.layout.single_debt_item,parent,false);
-            return new DebtHolder(view);
+
+            return new DebtHolder(view,parent.getContext());
         }
 
         @Override
