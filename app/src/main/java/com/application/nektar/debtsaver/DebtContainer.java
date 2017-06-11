@@ -40,6 +40,12 @@ public class DebtContainer {
         mCheckedUsers.clear();
     }
 
+    public void resetCache(){
+        mDebtsList.clear();
+        mKeyList.clear();
+        mCheckedUsers.clear();
+    }
+
     private DebtContainer() {
         mPhotoUrl="";
         mName="";

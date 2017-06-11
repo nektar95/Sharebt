@@ -119,4 +119,10 @@ public class NavigationActivity extends AppCompatActivity  {
     protected void onResume() {
         super.onResume();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        DebtContainer.get().resetCache();
+    }
 }

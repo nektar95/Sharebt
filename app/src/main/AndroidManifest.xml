@@ -38,7 +38,7 @@
                   android:windowSoftInputMode="adjustPan"
                   android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".login.EntryActivity"
+        <activity android:name=".login.register.RegisterActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppTheme.NoActionBar" />
 
