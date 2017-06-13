@@ -98,7 +98,10 @@ public class StatsFragment extends Fragment {
         mAllDebtTextView.setText(String.format(Locale.getDefault(),"%.2f",mMinusDebts+mPlusDebts));
         List<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry(mPlusDebts,"Debts"));
-        entries.add(new PieEntry(mMinusDebts*(-1),"Obligations"));
+        //temporary change
+        if(mMinusDebts > 0) {
+            entries.add(new PieEntry(mMinusDebts * (-1), "Obligations"));
+        }
 
         final PieDataSet dataSet = new PieDataSet(entries,"");
 

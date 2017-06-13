@@ -121,8 +121,8 @@ public class NavigationActivity extends AppCompatActivity  {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
         DebtContainer.get().resetCache();
     }
 }

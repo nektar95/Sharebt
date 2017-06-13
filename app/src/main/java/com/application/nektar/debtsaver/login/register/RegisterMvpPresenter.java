@@ -9,6 +9,7 @@ import com.application.nektar.debtsaver.login.base.BasePresenter;
 public interface RegisterMvpPresenter extends BasePresenter{
     void onResetBtnClick();
     void onSignInBtnClick();
-    void onSignUpBtnClick();
+    void onSignUpBtnClick(String name, String password);
     void setupFirebase();
+
 }

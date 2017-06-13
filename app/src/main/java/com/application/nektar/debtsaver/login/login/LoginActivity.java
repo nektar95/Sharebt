@@ -1,4 +1,4 @@
-package com.application.nektar.debtsaver.login;
+package com.application.nektar.debtsaver.login.login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.application.nektar.debtsaver.DebtContainer;
 import com.application.nektar.debtsaver.NavigationActivity;
 import com.application.nektar.debtsaver.R;
+import com.application.nektar.debtsaver.login.ResetPasswordActivity;
 import com.application.nektar.debtsaver.login.register.RegisterActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;

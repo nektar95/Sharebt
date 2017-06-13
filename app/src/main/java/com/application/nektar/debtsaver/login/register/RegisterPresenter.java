@@ -40,9 +40,8 @@ public class RegisterPresenter implements RegisterMvpPresenter {
     //easier approach by making fetch in presenter instead making interactor
 
     @Override
-    public void onSignUpBtnClick() {
-        email = registerView.getEmail();
-        String password = registerView.getPassword();
+    public void onSignUpBtnClick(String name, String password) {
+        email = name;
 
         if (TextUtils.isEmpty(email)) {
             registerView.makeToast("Enter email address!");

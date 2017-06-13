@@ -13,6 +13,4 @@ public interface RegisterMvpView extends BaseView<RegisterMvpPresenter> {
     void hideProgreesBar();
     void makeToast(String s);
     void startNavActivity();
-    String getEmail();
-    String getPassword();
 }

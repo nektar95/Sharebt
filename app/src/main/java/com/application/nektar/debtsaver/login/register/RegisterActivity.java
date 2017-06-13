@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterMvpVi
 
     @OnClick(R.id.sign_up_button)
     public void signUpClick(){
-        presenter.onSignUpBtnClick();
+        presenter.onSignUpBtnClick(inputEmail.getText().toString().trim(),inputPassword.getText().toString().trim());
     }
 
     @OnClick(R.id.sign_in_button)
@@ -51,16 +51,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterMvpVi
     @OnClick(R.id.button_reset_password_entry)
     public void resetBtnClick(){
         presenter.onResetBtnClick();
-    }
-
-    @Override
-    public String getEmail() {
-        return inputEmail.getText().toString().trim();
-    }
-
-    @Override
-    public String getPassword() {
-        return inputPassword.getText().toString().trim();
     }
 
     @Override
