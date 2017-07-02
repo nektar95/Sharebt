@@ -2,6 +2,14 @@ package com.application.nektar.debtsaver;
 
 import android.graphics.Bitmap;
 
+import com.application.nektar.debtsaver.data.SingleDebt;
+import com.application.nektar.debtsaver.data.SingleUser;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by pc on 24.02.2017.
  */
@@ -10,6 +18,11 @@ public class DebtContainer {
     private String mName;
     private String mPhotoUrl;
     private Bitmap mPhotoBitmap;
+
+    private List<SingleDebt> mDebtsList;
+    private Map<SingleDebt,String> mKeyList;
+
+    private List<SingleUser> mCheckedUsers;
 
 
     public static DebtContainer get() {
@@ -22,11 +35,35 @@ public class DebtContainer {
     public void clearCache(){
         mName = "";
         mPhotoUrl ="";
+        mDebtsList.clear();
+        mKeyList.clear();
+        mCheckedUsers.clear();
+    }
+
+    public void resetCache(){
+        mDebtsList.clear();
+        mKeyList.clear();
+        mCheckedUsers.clear();
     }
 
     private DebtContainer() {
         mPhotoUrl="";
         mName="";
+        mDebtsList = new ArrayList<>();
+        mKeyList = new HashMap<>();
+        mCheckedUsers = new ArrayList<>();
+    }
+
+    public List<SingleUser> getCheckedUsers() {
+        return mCheckedUsers;
+    }
+
+    public List<SingleDebt> getDebtsList() {
+        return mDebtsList;
+    }
+
+    public Map<SingleDebt, String> getKeyList() {
+        return mKeyList;
     }
 
     public Bitmap getPhotoBitmap() {

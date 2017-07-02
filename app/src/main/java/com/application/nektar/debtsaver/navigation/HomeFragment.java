@@ -4,34 +4,29 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.application.nektar.debtsaver.DebtContainer;
 import com.application.nektar.debtsaver.R;
 import com.application.nektar.debtsaver.data.SingleDebt;
-import com.application.nektar.debtsaver.login.LoginActivity;
+import com.application.nektar.debtsaver.login.login.LoginActivity;
+import com.application.nektar.debtsaver.navigation.home.DebtAdapter;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
-import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,25 +45,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by pc on 23.02.2017.
  */
 
 public class HomeFragment extends Fragment {
-    private RecyclerView mDebtsRecyclerView;
-    private ImageView mSignOutButton;
+    @BindView(R.id.home_sign_out) ImageView mSignOutButton;
+    @BindView(R.id.home_name_textview) TextView mNameTextView;
+    @BindView(R.id.profile_picture_home_another) ImageView mProfileImageView;
+    @BindView(R.id.recycler_view_home_fragment) RecyclerView mDebtsRecyclerView;;
+
     private GraphRequest mGraphRequest;
-    private TextView mNameTextView;
-    private ImageView mProfileImageView;
-    private List<SingleDebt> mDebtsList;
     private DebtAdapter mDebtAdapter;
-    private Map<SingleDebt,String> mKeyList;
     private String mId;
 
     public static HomeFragment newInstance(){
@@ -81,17 +77,34 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
-        mSignOutButton = (ImageView) view.findViewById(R.id.home_sign_out);
-        mNameTextView = (TextView) view.findViewById(R.id.home_name_textview);
-        mProfileImageView = (ImageView) view.findViewById(R.id.profile_picture_home_another);
-        mDebtsRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_home_fragment);
-
-        mDebtsList = new ArrayList<>();
-        mKeyList = new HashMap<>();
+        ButterKnife.bind(this,view);
 
         mDebtsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mDebtAdapter = new DebtAdapter(mDebtsList);
+        mDebtAdapter = new DebtAdapter(DebtContainer.get().getDebtsList());
         mDebtsRecyclerView.setAdapter(mDebtAdapter);
+
+        Observable<List<SingleDebt>> listObservable = Observable.just(DebtContainer.get().getDebtsList());
+        listObservable.subscribe(new Observer<List<SingleDebt>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(List<SingleDebt> value) {
+                mDebtAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
 
         final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
@@ -102,8 +115,8 @@ public class HomeFragment extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 SingleDebt debt = dataSnapshot.getValue(SingleDebt.class);
 
-                mKeyList.put(debt,dataSnapshot.getKey());
-                mDebtsList.add(debt);
+                DebtContainer.get().getKeyList().put(debt,dataSnapshot.getKey());
+                DebtContainer.get().getDebtsList().add(debt);
                 mDebtAdapter.notifyDataSetChanged();
             }
 
@@ -114,9 +127,9 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                mKeyList.remove(dataSnapshot.getKey());
+                DebtContainer.get().getKeyList().remove(dataSnapshot.getKey());
                 SingleDebt debt = dataSnapshot.getValue(SingleDebt.class);
-                mDebtsList.remove(debt);
+                DebtContainer.get().getDebtsList().remove(debt);
                 mDebtAdapter.notifyDataSetChanged();
             }
 
@@ -206,7 +219,6 @@ public class HomeFragment extends Fragment {
                                             //Uri downloadUrl = taskSnapshot.getDownloadUrl();
                                         }
                                     });
-
                                 }
 
                                 @Override
@@ -251,7 +263,7 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
-
+/*
     private class DebtHolder extends RecyclerView.ViewHolder{
         private RelativeLayout mLinearLayout;
         private TextView mNameTextView;
@@ -375,4 +387,5 @@ public class HomeFragment extends Fragment {
             return mSingleDebts.size();
         }
     }
+    */
 }

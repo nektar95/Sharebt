@@ -1,58 +1,50 @@
 package com.application.nektar.debtsaver;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
-import com.application.nektar.debtsaver.login.LoginActivity;
 import com.application.nektar.debtsaver.navigation.AddFragment;
 import com.application.nektar.debtsaver.navigation.HomeFragment;
 import com.application.nektar.debtsaver.navigation.StatsFragment;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by pc on 22.02.2017.
  */
 
 public class NavigationActivity extends AppCompatActivity  {
+    //@BindView(R.id.fragment_container) FrameLayout mFrameLayout;
+    @BindView(R.id.bottom_navigation) BottomNavigationView mBottomNavigationView;
+
     private AddFragment mAddFragment;
     private HomeFragment mHomeFragment;
     private StatsFragment mStatsFragment;
     private FragmentManager mFragmentManager;
-    private BottomNavigationView mBottomNavigationView;
-    private FirebaseAuth mFirebaseAuth;
-    private FrameLayout mFrameLayout;
     private FragmentTransaction mFragmentTransaction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_activity);
-
-        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        mFrameLayout = (FrameLayout) findViewById(R.id.fragment_container);
-
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        ButterKnife.bind(this);
 
         mFragmentManager = getSupportFragmentManager();
-        mHomeFragment = HomeFragment.newInstance();
         mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.add(R.id.fragment_container,mHomeFragment).commit();
-
+        createFragments();
+        if(savedInstanceState == null) { //primitive way
+            mFragmentTransaction.add(R.id.fragment_container, mHomeFragment).commit();
+        }
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                createFragments();
                 mFragmentTransaction = mFragmentManager.beginTransaction();
                 switch (item.getItemId()){
                     case R.id.action_home:{
@@ -109,8 +101,6 @@ public class NavigationActivity extends AppCompatActivity  {
                 return true;
             }
         });
-
-
     }
 
     private void createFragments(){
@@ -128,5 +118,11 @@ public class NavigationActivity extends AppCompatActivity  {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DebtContainer.get().resetCache();
     }
 }
